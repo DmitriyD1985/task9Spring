@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring security and Cassandra</title>
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+</head>
+<div>
+<h1>Страница работ с RealEstate</h1>
+<form>
+    <h2>Create недвижимость</h2>
+    <p>Введите название недвижимости</p>
+    <input id="RealEstateName"  type="text" size="40">
+    <input id="RealEstatePrice"  type="number" size="40">
+    <br>
+    <br>
+    <input id="docreate" type="button" value="создать">
+</form>
+<form>
+    <h2>Обновить имя недвижимости</h2>
+    <p>Введите старое имя недвижимости</p>
+    <input id="oldname"  type="text" size="40">
+    <br>
+    <p>Введите новое имя недвижимости</p>
+    <input id="newname"  type="text" size="40">
+    <br>
+    <br>
+    <input id="doupdate" type="button" value="обновить">
+</form>
+<form>
+    <h2>Read недвижимость</h2>
+    <p>Введите имя для поиска</p>
+    <input id="searchname" type="text" size="40">
+    <br>
+    <br>
+    <input id="doread" type="button" value="получить одно зданьеце">
+    <input id="doreadall" type="button" value="получить все здания">
+    <input id="dodelete" type="button" value="удалить одно зданьеце">
+    <div id="outputblock"></div>
+</form>
+</div>
+</body>
+<script>
+    document.getElementById("docreate").onclick =
+        function createRealEstate() {
+            let data = {}
+            data["name"] = document.getElementById("RealEstateName").value;
+            data["price"] = document.getElementById("RealEstatePrice").value;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/realestate/create",
+                data: JSON.stringify(data),
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + JSON.stringify(data.msg, null, 4);
+                    $('#outputblock').html(json);
+                    console.log("SUCCESS : ", data);
+                  },
+                error: function (e) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + e.responseText;
+                    $('#outputblock').html(json);
+                    console.log("ERROR : ", e);
+                }
+
+                });
+        }
+    document.getElementById("doread").onclick =
+        function getOneRealEstate() {
+        let adressrequest = "/realestate/read/"+document.getElementById("searchname").value;
+            alert(adressrequest);
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: adressrequest,
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + JSON.stringify(data.msg, null, 4);
+                    $('#outputblock').html(json);
+                    console.log("SUCCESS : ", data);
+                },
+                error: function (e) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + e.responseText;
+                    $('#outputblock').html(json);
+                    console.log("ERROR : ", e);
+                }
+
+            });
+        }
+
+    document.getElementById("doupdate").onclick =
+        function updateRealEstate() {
+            let updateinfo = {}
+            updateinfo["oldname"] = document.getElementById("oldname").value;
+            updateinfo["newname"] = document.getElementById("newname").value;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/realestate/admin/update",
+                data: JSON.stringify(updateinfo),
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + JSON.stringify(data.msg, null, 4);
+                    $('#outputblock').html(json);
+                    console.log("SUCCESS : ", data);
+                },
+                error: function (e) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + e.responseText;
+                    $('#outputblock').html(json);
+                    console.log("ERROR : ", e);
+                }
+            });
+        }
+    document.getElementById("doreadall").onclick =
+        function deleteRealEstate() {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/realestate/admin/all",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + JSON.stringify(data.msg, null, 4);
+                    $('#outputblock').html(json);
+                    console.log("SUCCESS : ", data);
+                },
+                error: function (e) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + e.responseText;
+                    $('#outputblock').html(json);
+                    console.log("ERROR : ", e);
+                }
+            });
+        }
+
+    document.getElementById("dodelete").onclick =
+        function getAllRealEstate() {
+            let deleteRealEstate = document.getElementById("searchname").value;
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json",
+                url: "/realestate/admin/delete",
+                data: JSON.stringify(deleteRealEstate),
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + JSON.stringify(data.msg, null, 4);
+                    $('#outputblock').html(json);
+                    console.log("SUCCESS : ", data);
+                },
+                error: function (e) {
+                    var json = "<h4>Ajax Response</h4>"
+                        + e.responseText;
+                    $('#outputblock').html(json);
+                    console.log("ERROR : ", e);
+                }
+            });
+        }
+</script>
+</html>

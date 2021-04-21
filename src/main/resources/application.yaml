@@ -1,0 +1,64 @@
+#general
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
+    initialization-mode: always
+
+#security
+configuration:
+  name: Default
+  properties:
+    property:
+      - name: log-path
+        value: logs
+      - name: archive
+        value: ${log-path}/archive
+  appenders:
+    Console:
+      PatternLayout:
+        pattern: '[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n'
+      name: Console-Appender
+      target: SYSTEM_OUT
+    File:
+      PatternLayout:
+        pattern: '[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n'
+      fileName: ${log-path}/logfile.log
+      name: File-Appender
+    RollingFile:
+      DefaultRolloverStrategy:
+        max: '30'
+      PatternLayout:
+        pattern: '[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n'
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: 1 KB
+      fileName: ${log-path}/rollingfile.log
+      filePattern: ${archive}/rollingfile.log.%d{yyyy-MM-dd-hh-mm}.gz
+      name: RollingFile-Appender
+  loggers:
+    logger:
+      additivity: 'false'
+      appender-ref:
+        - level: info
+          ref: Console-Appender
+        - level: error
+          ref: File-Appender
+        - level: debug
+          ref: RollingFile-Appender
+      level: debug
+      name: guru.springframework.blog.log4j2json
+    root:
+      appender-ref:
+        ref: Console-Appender
+      level: debug
+
+        G:\projects\task9Postgres\task9Spring\src\main\resources\logs
