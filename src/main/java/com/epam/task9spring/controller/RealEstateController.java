@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/realestate")
+@RequestMapping("/authorized/realestate")
 @RestController
 public class RealEstateController {
 
@@ -19,13 +19,13 @@ public class RealEstateController {
         this.realEstateService = realEstateService;
     }
 
-    @PostMapping("/publics/create")
+    @PostMapping("/user/create")
     public String registrationRealEstate(@RequestBody String request) {
         realEstateService.saveRealEstate(request);
         return "{\"msg\":\"здание добавлено\"}";
     }
 
-    @GetMapping("/publics/read/{name}")
+    @GetMapping("/user/read/{name}")
     public String getOneRealEstate(@PathVariable String name) {
         realEstateService.getRealEstateByName(name);
         return "{\"msg\":\"Получите одно здание\"}";

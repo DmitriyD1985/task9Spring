@@ -69,5 +69,6 @@ public class Agent {
 
     public Set<RealEstate> getSoldRealEstate() {
         return realEstates.stream().filter(RealEstate::isSoldSign).collect(Collectors.toUnmodifiableSet());
+//        return null;
     }
 }

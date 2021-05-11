@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/agent")
+@RequestMapping("/authorized/agent")
 @RestController
 public class AgentController {
 
@@ -20,13 +20,13 @@ public class AgentController {
         this.agentService = agentService;
     }
 
-    @PostMapping("/publics/create")
+    @PostMapping("/user/create")
     public String registrationAgent(@RequestBody String request) {
         agentService.saveAgent(request);
         return "{\"msg\":\"здание добавлено\"}";
     }
 
-    @GetMapping("/publics/read/{name}")
+    @GetMapping("/user/read/{name}")
     public String getOneAgent(@PathVariable String name) {
         agentService.getAgentByName(name);
         return "{\"msg\":\"Получите одно здание\"}";

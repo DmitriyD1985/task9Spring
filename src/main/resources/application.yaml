@@ -5,7 +5,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5433/postgres
@@ -13,7 +13,7 @@ spring:
     password: postgres
     initialization-mode: always
 
-#security
+#logger
 configuration:
   name: Default
   properties:
@@ -60,5 +60,3 @@ configuration:
       appender-ref:
         ref: Console-Appender
       level: debug
-
-        G:\projects\task9Postgres\task9Spring\src\main\resources\logs

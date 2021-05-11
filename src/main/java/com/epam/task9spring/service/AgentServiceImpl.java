@@ -11,13 +11,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 
 
@@ -105,9 +99,9 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public String getTopAgentsBySumOfSales() {
         Map<BigDecimal, Agent> sales = new TreeMap<>();
-        agentRepository.findAll().forEach(a-> {
+        agentRepository.findAll().forEach(a -> {
             sales.put(a.getSoldRealEstate().stream().map(RealEstate::getPrice)
-            .reduce(BigDecimal.ZERO, BigDecimal::add), agentRepository.findById(a.getId()).orElseThrow());
+                    .reduce(BigDecimal.ZERO, BigDecimal::add), agentRepository.findById(a.getId()).orElseThrow());
         });
 
         ObjectMapper mapper = new ObjectMapper();

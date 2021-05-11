@@ -7,12 +7,14 @@ import com.epam.task9spring.repository.RealEstateRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +23,7 @@ public class RealEstateServiceImpl implements RealEstateService {
     private ObjectNode node = null;
     private final RealEstateRepository realEstateRepository;
     private final AgentRepository agentRepository;
+    private static final Logger logger = LogManager.getLogger(RealEstateServiceImpl.class);
 
     public RealEstateServiceImpl(RealEstateRepository realEstateRepository, AgentRepository agentRepository) {
         this.realEstateRepository = realEstateRepository;
@@ -59,7 +62,7 @@ public class RealEstateServiceImpl implements RealEstateService {
         try {
             json = mapper.writeValueAsString(realEstateRepository.findAll());
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.log(Level.INFO, "Пользователь не енайден можно создаать нового");
         }
         return json;
     }
@@ -91,7 +94,7 @@ public class RealEstateServiceImpl implements RealEstateService {
             e.printStackTrace();
         }
         Agent agent = agentRepository.findByName(node.get("agentname").asText()).orElseThrow();
-        RealEstate realEstateForSale = agent.getRealEstates().stream().filter(a->a.getName().equals(node.get("realestatename").asText())).findFirst().orElseThrow();
+        RealEstate realEstateForSale = agent.getRealEstates().stream().filter(a -> a.getName().equals(node.get("realestatename").asText())).findFirst().orElseThrow();
         realEstateForSale.setSoldSign(true);
         return realEstateForSale;
     }
